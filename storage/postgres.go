@@ -6,6 +6,7 @@ import (
 	_ "github.com/lib/pq" // Driver de PostgreSQL
 	"log"
 	"url-shortener/utils"
+	"os"
 )
 
 var db *sql.DB
@@ -13,7 +14,13 @@ var db *sql.DB
 func init() {
 	// Conecta a PostgreSQL
 	var err error
-	connStr := "user=j0k3r dbname=urlshortener sslmode=disable password=1234"
+	connStr := fmt.Sprintf(
+		"user=%s dbname=%s password=%s host=%s sslmode=disable",
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_DB"),
+		os.Getenv("POSTGRES_PASSWORD"),
+		os.Getenv("POSTGRES_HOST"),
+	)
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)

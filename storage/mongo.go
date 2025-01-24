@@ -7,7 +7,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
+	"os"
 	"time"
+	"url-shortener/config"
 )
 
 var client *mongo.Client
@@ -15,7 +17,7 @@ var client *mongo.Client
 // init establece la conexión con MongoDB
 func init() {
 	// Conecta a MongoDB
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI"))
 	var err error
 	client, err = mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
@@ -28,6 +30,16 @@ func init() {
 		log.Fatal(err)
 	}
 	fmt.Println("Conectado a MongoDB")
+}
+
+func InitMongoDB(cfg *config.Config) error {
+	clientOptions := options.Client().ApplyURI(cfg.MongoDB.URI)
+	var err error
+	client, err = mongo.Connect(context.TODO(), clientOptions)
+	if err != nil {
+		return err
+	}
+	return client.Ping(context.TODO(), nil)
 }
 
 // SaveURL guarda una URL en MongoDB con el esquema deseado

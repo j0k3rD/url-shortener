@@ -3,27 +3,19 @@ package storage
 import (
 	"context"
 	"github.com/go-redis/redis/v8"
-	"log"
 	"time"
-	"fmt"
+	"url-shortener/config"
 )
 
 var rdb *redis.Client
 
-func init() {
-	// Conecta a Redis
+func InitRedis(cfg *config.Config) error {
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // Dirección de Redis
-		Password: "",               // Sin contraseña
-		DB:       0,                // Base de datos por defecto
+		Addr:     cfg.Redis.Addr,
+		Password: cfg.Redis.Password,
+		DB:       cfg.Redis.DB,
 	})
-
-	// Verifica la conexión
-	_, err := rdb.Ping(context.Background()).Result()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Conectado a Redis")
+	return rdb.Ping(context.Background()).Err()
 }
 
 // CacheURL almacena una URL en Redis

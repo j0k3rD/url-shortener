@@ -1,0 +1,34 @@
+# Variables de entorno
+.env
+
+# GoLand
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Directorios de dependencias y compilación
+/vendor/
+/bin/
+/dist/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Directorios de caché
+/tmp/
+.tmp/
